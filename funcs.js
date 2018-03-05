@@ -1,38 +1,18 @@
 var fs = require('fs')
 var path = require('path')
 
-/**
- * General purpose data encoding
- *
- * (string): string
- */
 function encode (data) {
   return (new Buffer(data)).toString('base64')
 }
 
-/**
- * Inverse of `encode`
- *
- * (string): string
- */
 function decode (data) {
   return (new Buffer('' + data, 'base64')).toString()
 }
 
-/**
- * Encode a superhero name
- *
- * (string): string
-*/
 module.exports.encodeName = function (name) {
   return encode('@' + name)
 }
 
-/**
- * Load the database
- *
- * (string, (?Error, ?Object))
- */
 module.exports.loadDb = function (dbFile, cb) {
   fs.readFile(dbFile, function (err, res) {
     if (err) { return cb(err) }
@@ -48,11 +28,6 @@ module.exports.loadDb = function (dbFile, cb) {
   })
 }
 
-/**
- * Find the user's inbox, given their encoded username
- *
- * (Object, string): Object
- */
 module.exports.findInbox = function (db, encodedName) {
   var messages = db.messages
   return {
@@ -69,11 +44,6 @@ module.exports.findInbox = function (db, encodedName) {
   }
 }
 
-/**
- * Find the next message, given the hash of the previous message
- *
- * ({ messages: Array<Object> }, string): string
- */
 module.exports.findNextMessage = function (inbox, lastHash) {
   // find the message which comes after lastHash
   var found
@@ -83,15 +53,6 @@ module.exports.findNextMessage = function (inbox, lastHash) {
       break
     }
   }
-
-  // for (var i = 0; i < inbox.messages.length; i += 1) {
-  //   console.log(inbox.messages[i].from);
-  //   console.log(inbox.messages[i].hash);
-  //   console.log(decode(inbox.messages[i].from));
-  //   console.log(fs.readFileSync(path.join(inbox.dir, inbox.messages[i].hash), "utf8"));
-  //   console.log(decode(fs.readFileSync(path.join(inbox.dir, inbox.messages[i].hash), 'utf8')));
-  //     console.log("--");
-  // }
 
   // read and decode the message
   return 'from: ' + decode(inbox.messages[found].from) + '\n---\n' +

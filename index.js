@@ -27,5 +27,5 @@ funcs.loadDb(dbFile, function (err, db) {
 
   // 5. print out the message.
   // Paste the console output into the "Solution" field and you're done!
-  console.log(nextMessage)
+  console.log(nextMessage);
 })
